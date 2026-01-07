@@ -306,14 +306,20 @@ function openTactic(id) {
   renderBestPractices(practicesToShow);
   
   // Show/hide draft badge and set initial status
+  // Also show/hide draft-only menu items
+  const draftOnlyItems = document.querySelectorAll('.draft-only');
   if (tactic.hasDraft) {
     modalDraftBadge.classList.remove('badge-hidden');
     saveStatus.textContent = 'Unpublished';
     saveStatus.className = 'save-status';
+    // Show draft-only menu items
+    draftOnlyItems.forEach(item => item.style.display = '');
   } else {
     modalDraftBadge.classList.add('badge-hidden');
     saveStatus.textContent = 'Published';
     saveStatus.className = 'save-status';
+    // Hide draft-only menu items
+    draftOnlyItems.forEach(item => item.style.display = 'none');
   }
   
   // Show modal
@@ -413,6 +419,10 @@ function autosaveDraft() {
   
   // Show draft badge
   modalDraftBadge.classList.remove('badge-hidden');
+  
+  // Show draft-only menu items
+  const draftOnlyItems = document.querySelectorAll('.draft-only');
+  draftOnlyItems.forEach(item => item.style.display = '');
   
   // Show saved status (not published since it's a draft)
   saveStatus.textContent = 'Saved (not published)';
