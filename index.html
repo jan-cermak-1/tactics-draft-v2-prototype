@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objectives & Tactics</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="4" fill="#0066FF"/>
+            <path d="M7 12h10M12 7v10" stroke="white" stroke-width="2"/>
+          </svg>
+          <div class="logo-text">
+            <span class="logo-title">Dev</span>
+            <span class="logo-subtitle">BUTLER</span>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Administration</div>
+          <a href="#" class="nav-item">Users</a>
+          <a href="#" class="nav-item">Permissions</a>
+        </div>
+        
+        <a href="#" class="nav-item">Page Info</a>
+        <a href="#" class="nav-item">Page Tagging</a>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Support Interface</div>
+          <a href="#" class="nav-item">Accounts</a>
+          <a href="#" class="nav-item">Users</a>
+        </div>
+        
+        <a href="#" class="nav-item">OMD</a>
+        <a href="#" class="nav-item">Business Toggles</a>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Fuel</div>
+          <a href="#" class="nav-item active">Objectives & Tactics</a>
+          <a href="#" class="nav-item">Industry events</a>
+          <a href="#" class="nav-item">Custom scripts</a>
+          <a href="#" class="nav-item">Fuel profile labels</a>
+        </div>
+        
+        <a href="#" class="nav-item">Library / Components</a>
+        <a href="#" class="nav-item">Storybook</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">JC</div>
+          <span class="user-name">Jan Čermák</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Objectives & Tactics</h1>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <input type="text" placeholder="Search tactics..." class="search-input">
+          </div>
+          <button class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Create Objective
+          </button>
+          <button class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Create Tactic
+          </button>
+        </div>
+      </header>
+
+      <div class="tabs">
+        <button class="tab">Objective templates</button>
+        <button class="tab active">Tactic templates</button>
+      </div>
+
+      <div class="table-container">
+        <table class="tactics-table">
+          <thead>
+            <tr>
+              <th class="col-name">
+                Name
+                <svg class="sort-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </th>
+              <th class="col-industry">Suggested Industry</th>
+              <th class="col-objectives">Objectives</th>
+              <th class="col-edited">Last edited by</th>
+              <th class="col-active">Active</th>
+              <th class="col-draft">Draft</th>
+            </tr>
+          </thead>
+          <tbody id="tactics-tbody">
+            <!-- Rows will be inserted by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Tactic Detail Modal -->
+  <div id="tactic-modal" class="modal">
+    <div class="modal-content">
+      <!-- Left Column -->
+      <div class="modal-left-column">
+        <header class="modal-header">
+          <div class="modal-header-left">
+            <button class="btn-icon btn-close-modal" id="close-modal">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <h2 class="modal-title" id="modal-title">Tactic Name</h2>
+            <span class="badge badge-draft badge-hidden" id="modal-draft-badge">Draft</span>
+            <button class="btn-icon btn-edit-title">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="modal-header-center">
+            <span class="save-status" id="save-status"></span>
+            <div class="header-divider" id="status-divider"></div>
+            <div class="toggle-group" title="Active means it's visible in the Emplifi platform">
+              <label class="toggle">
+                <input type="checkbox" id="active-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-text">Active</span>
+            </div>
+            <div class="toggle-group">
+              <label class="toggle">
+                <input type="checkbox" id="preview-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-text">Preview</span>
+            </div>
+            <button class="btn btn-primary" id="publish-btn">Publish</button>
+            <div class="dropdown-container">
+              <button class="btn-icon btn-more" id="more-menu-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                  <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                  <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu" id="more-menu">
+                <button class="dropdown-item" id="duplicate-tactic">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M3 11V4a1 1 0 011-1h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  Duplicate tactic
+                </button>
+                <button class="dropdown-item" id="discard-draft">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  Discard draft
+                </button>
+                <button class="dropdown-item" id="save-draft-as-new">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  Save draft as new tactic
+                </button>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item dropdown-item-danger" id="remove-tactic">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 5h10M6 5V3h4v2M5 5v8h6V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Remove tactic
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+        <!-- Editor Panel -->
+        <div class="editor-panel">
+          <div class="editor-toolbar">
+            <button class="toolbar-btn" title="Bold"><strong>B</strong></button>
+            <button class="toolbar-btn" title="Italic"><em>I</em></button>
+            <button class="toolbar-btn" title="Underline"><u>U</u></button>
+            <div class="toolbar-divider"></div>
+            <button class="toolbar-btn" title="Bullet List">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="3" cy="4" r="1" fill="currentColor"/>
+                <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                <circle cx="3" cy="12" r="1" fill="currentColor"/>
+                <path d="M6 4h8M6 8h8M6 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" title="Numbered List">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <text x="2" y="5" font-size="5" fill="currentColor">1</text>
+                <text x="2" y="9" font-size="5" fill="currentColor">2</text>
+                <text x="2" y="13" font-size="5" fill="currentColor">3</text>
+                <path d="M6 4h8M6 8h8M6 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="toolbar-divider"></div>
+            <button class="toolbar-btn" title="Link">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M7 9l2-2M6 10l-1 1a2 2 0 102.8 2.8l1-1M10 6l1-1a2 2 0 10-2.8-2.8l-1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" title="Image">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="2" y="3" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="5" cy="6" r="1" fill="currentColor"/>
+                <path d="M2 11l3-3 2 2 4-4 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" title="Code">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M5 4L1 8l4 4M11 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" title="Table">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2 6h12M2 10h12M6 2v12M10 2v12" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </button>
+            <div class="toolbar-divider"></div>
+            <button class="toolbar-btn toolbar-btn-widget" id="add-widget-btn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M5 4L1 8l4 4M11 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Add best practices widget
+            </button>
+          </div>
+          
+          <div class="editor-content" id="editor-content" contenteditable="true">
+            <p>sgfdgsdfg sdfg dsfg dfs gdsf gsdf</p>
+            <table class="content-table">
+              <tbody>
+                <tr>
+                  <td>Test</td>
+                  <td>CCC</td>
+                  <td>DDD</td>
+                </tr>
+                <tr>
+                  <td>SSSS</td>
+                  <td>AAA</td>
+                  <td>WWWWW</td>
+                </tr>
+                <tr>
+                  <td>CCCC</td>
+                  <td>AAA</td>
+                  <td>BBBB</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>sfsdfsadfsdf sf fd gsdfg</p>
+            <p>sdfgdsf gdsfg</p>
+            <div class="best-practices-widget">
+              <div class="widget-drag-handle">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
+                  <circle cx="2" cy="2" r="1" fill="currentColor"/>
+                  <circle cx="6" cy="2" r="1" fill="currentColor"/>
+                  <circle cx="2" cy="7" r="1" fill="currentColor"/>
+                  <circle cx="6" cy="7" r="1" fill="currentColor"/>
+                  <circle cx="2" cy="12" r="1" fill="currentColor"/>
+                  <circle cx="6" cy="12" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <span class="widget-text">Best practices widget</span>
+              <button class="widget-delete">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 5h10M6 5V3h4v2M5 5v8h6V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <p>dfs sdfgdsfg dsf gdfs gdsfg</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Best Practices (one unified block) -->
+      <div class="modal-right-column">
+        <div class="panel-header">
+          <button class="header-tab active" data-tab="practices">Best practices editor</button>
+          <button class="header-tab" data-tab="activity">Activity log</button>
+        </div>
+        <div class="panel-content">
+          <p class="panel-description">Best practices outline the recommended methods for implementing tactics.</p>
+          <p class="panel-hint">Ensure that the best practices section is integrated into the Tactics overview at the appropriate location; otherwise, it will be placed below by default.</p>
+          
+          <button class="btn btn-add-practice" id="add-practice-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Add best practice
+          </button>
+          
+          <div class="practices-list" id="practices-list">
+            <!-- Best practices will be inserted by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="confirm-modal">
+    <div class="confirm-modal-content">
+      <h3 id="confirm-modal-title">Confirm</h3>
+      <p id="confirm-modal-message">Are you sure?</p>
+      <div class="confirm-modal-actions">
+        <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snackbar -->
+  <div id="snackbar" class="snackbar"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
